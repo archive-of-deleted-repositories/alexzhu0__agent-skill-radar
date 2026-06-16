@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import datetime as dt
 import subprocess
 import sys
@@ -108,7 +110,9 @@ class ValidateRadarTests(unittest.TestCase):
         repo: Path,
         name: str,
         source_ids_line: str = "  - source-official\n  - source-inference",
+        starter_path: str | None = None,
     ) -> None:
+        starter_line = f"starter_path: {starter_path}" if starter_path else "starter_path: null"
         write_text(
             repo / "topics" / f"{name}.md",
             "\n".join(
@@ -121,7 +125,7 @@ class ValidateRadarTests(unittest.TestCase):
                     f"updated_at_utc: {now_utc()}",
                     "source_ids:",
                     source_ids_line,
-                    f"starter_path: starters/{name}/SKILL.md",
+                    starter_line,
                     "---",
                     TOPIC_HEADERS,
                 ]
@@ -160,8 +164,20 @@ class ValidateRadarTests(unittest.TestCase):
     def build_topic_index(self, repo: Path, names) -> None:
         lines = ["topics:"]
         for name in names:
-            lines.append(f"  - id: {name}")
-            lines.append(f"    file: topics/{name}.md")
+            starter_path = (
+                f"starters/{name}/SKILL.md"
+                if name.endswith("-0") or name.endswith("-1")
+                else "null"
+            )
+            lines.append(f"  - name: {name}")
+            lines.append(f"    path: topics/{name}.md")
+            lines.append("    status: v0.1")
+            lines.append("    confidence: high")
+            lines.append("    verification_status: partial")
+            lines.append("    source_ids:")
+            lines.append("      - source-official")
+            lines.append("      - source-inference")
+            lines.append(f"    starter_path: {starter_path}")
         write_text(repo / "data/topic-index.yaml", "\n".join(lines))
 
     def build_valid_repo(self, fresh: bool = True, source_url: bool = True, topic_count: int = 7):
@@ -170,9 +186,11 @@ class ValidateRadarTests(unittest.TestCase):
         self.build_signal_sources(repo, fresh_source=fresh, with_url=source_url)
         names = [f"topic-{idx}" for idx in range(topic_count)]
         for name in names:
-            self.build_topic(repo, name)
             if name.endswith("-0") or name.endswith("-1"):
+                self.build_topic(repo, name, starter_path=f"starters/{name}/SKILL.md")
                 self.build_starter(repo, name)
+            else:
+                self.build_topic(repo, name)
         self.build_topic_index(repo, names)
         self.build_review_results(repo, names)
         return repo, names
@@ -183,6 +201,7 @@ class ValidateRadarTests(unittest.TestCase):
             repo,
             names[0],
             "  - source-official\n  - source-inference",
+            starter_path=f"starters/{names[0]}/SKILL.md",
         )
         self.build_review_results(repo, names)
         result = self.run_validator(repo)
@@ -271,6 +290,72 @@ class ValidateRadarTests(unittest.TestCase):
         )
         result = self.run_validator(repo, expect_success=False)
         self.assertIn("top topic table before API section", result.stderr)
+
+    def test_validator_fails_when_topic_index_path_leaves_topics(self):
+        repo, names = self.build_valid_repo()
+        lines = ["topics:"]
+        for idx, name in enumerate(names):
+            lines.append(f"  - name: {name}")
+            if idx == 0:
+                lines.append("    path: ../outside.md")
+            else:
+                lines.append(f"    path: topics/{name}.md")
+            lines.append("    status: v0.1")
+            lines.append("    confidence: high")
+            lines.append("    verification_status: partial")
+            lines.append("    source_ids:")
+            lines.append("      - source-official")
+            lines.append("      - source-inference")
+            lines.append("    starter_path: null")
+        write_text(repo / "data/topic-index.yaml", "\n".join(lines))
+        result = self.run_validator(repo, expect_success=False)
+        self.assertIn("topic path must stay under topics/", result.stderr)
+
+    def test_validator_fails_when_starter_path_is_missing(self):
+        repo, names = self.build_valid_repo()
+        self.build_topic(
+            repo,
+            names[0],
+            starter_path="starters/missing/SKILL.md",
+        )
+        self.build_review_results(repo, names)
+        result = self.run_validator(repo, expect_success=False)
+        self.assertIn("starter_path does not exist", result.stderr)
+
+    def test_validator_fails_when_starter_path_leaves_starters(self):
+        repo, names = self.build_valid_repo()
+        self.build_topic(
+            repo,
+            names[0],
+            starter_path="topics/topic-0.md",
+        )
+        self.build_review_results(repo, names)
+        result = self.run_validator(repo, expect_success=False)
+        self.assertIn("starter_path must stay under starters/", result.stderr)
+
+    def test_validator_fails_when_topic_index_metadata_drifts(self):
+        repo, names = self.build_valid_repo()
+        lines = ["topics:"]
+        for idx, name in enumerate(names):
+            lines.append(f"  - name: {name}")
+            lines.append(f"    path: topics/{name}.md")
+            lines.append("    status: draft" if idx == 0 else "    status: v0.1")
+            lines.append("    confidence: high")
+            lines.append("    verification_status: partial")
+            lines.append("    source_ids:")
+            lines.append("      - source-official")
+            lines.append("      - source-inference")
+            lines.append("    starter_path: null")
+        write_text(repo / "data/topic-index.yaml", "\n".join(lines))
+        result = self.run_validator(repo, expect_success=False)
+        self.assertIn("status does not match frontmatter", result.stderr)
+
+    def test_validator_fails_when_topic_file_is_not_indexed(self):
+        repo, _ = self.build_valid_repo()
+        self.build_topic(repo, "unlisted-topic")
+        self.build_review_results(repo, [f"topic-{idx}" for idx in range(7)])
+        result = self.run_validator(repo, expect_success=False)
+        self.assertIn("Topic file not listed in data/topic-index.yaml", result.stderr)
 
 
 if __name__ == "__main__":

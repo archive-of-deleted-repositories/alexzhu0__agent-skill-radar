@@ -23,4 +23,9 @@ launch_copy:
   - Validate structure with: python3 scripts/validate_radar.py .
 quality_gate:
   commands:
+    - python3 scripts/validate_radar.py .
     - python3 -m unittest discover -s tests
+    - python3 -m py_compile scripts/validate_radar.py tests/test_validate_radar.py
+  local_launch_checks:
+    - cd ../.. && python3 tools/highstar.py review repos/agent-skill-radar
+    - cd ../.. && python3 tools/highstar.py launch-copy repos/agent-skill-radar
