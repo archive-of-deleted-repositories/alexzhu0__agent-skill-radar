@@ -1,0 +1,79 @@
+topics:
+  - name: workflow-to-skill-converter
+    path: topics/workflow-to-skill-converter.md
+    status: v0.1
+    confidence: high
+    verification_status: partial
+    source_ids:
+      - github-agent-skills
+      - anthropic-skills
+      - prompt-engineering
+    starter_path: starters/workflow-to-skill-converter/SKILL.md
+    saturation: medium
+  - name: prompt-to-skill-spec
+    path: topics/prompt-to-skill-spec.md
+    status: v0.1
+    confidence: high
+    verification_status: partial
+    source_ids:
+      - github-agent-skills
+      - anthropic-skills
+      - awesome-llm-apps
+    starter_path: starters/prompt-to-skill-spec/SKILL.md
+    saturation: medium
+  - name: skill-example-generator
+    path: topics/skill-example-generator.md
+    status: v0.1
+    confidence: medium
+    verification_status: partial
+    source_ids:
+      - awesome-llm-apps
+      - prompt-engineering
+      - github-agent-skills
+    starter_path: null
+    saturation: low
+  - name: skill-quality-scorecard
+    path: topics/skill-quality-scorecard.md
+    status: v0.1
+    confidence: high
+    verification_status: partial
+    source_ids:
+      - github-agent-skills
+      - agent-evals
+      - anthropic-skills
+    starter_path: null
+    saturation: medium
+  - name: skill-install-doctor
+    path: topics/skill-install-doctor.md
+    status: v0.1
+    confidence: medium
+    verification_status: partial
+    source_ids:
+      - anthropic-skills
+      - github-agent-skills
+      - mcp-ecosystem
+    starter_path: null
+    saturation: low
+  - name: skill-release-kit
+    path: topics/skill-release-kit.md
+    status: v0.1
+    confidence: medium
+    verification_status: partial
+    source_ids:
+      - github-agent-skills
+      - awesome-llm-apps
+      - prompt-engineering
+    starter_path: null
+    saturation: medium
+  - name: skill-market-map
+    path: topics/skill-market-map.md
+    status: v0.1
+    confidence: medium
+    verification_status: partial
+    source_ids:
+      - github-agent-skills
+      - mcp-ecosystem
+      - llmops-cost
+      - agent-evals
+    starter_path: null
+    saturation: high

@@ -1,0 +1,71 @@
+generated_at_utc: "2026-06-16T15:04:45Z"
+sources:
+  - id: github-agent-skills
+    title: "Agent Skills - Codex | OpenAI Developers"
+    source_url: "https://developers.openai.com/codex/skills"
+    evidence_type: official-doc
+    signal_weight: strong
+    collected_at: "2026-06-16T15:04:45Z"
+    freshness_window_days: 365
+    summary: "Codex treats skills as reusable workflows, loads SKILL.md progressively, and recommends packaging stable work into skills instead of long prompts."
+    why_it_matters: "Direct evidence for the workflow-to-skill-converter topic and for prompt-to-spec work that turns repeated procedures into triggerable skills."
+
+  - id: awesome-llm-apps
+    title: "Save workflows as skills | Codex use cases"
+    source_url: "https://developers.openai.com/codex/use-cases/reusable-codex-skills"
+    evidence_type: official-doc
+    signal_weight: strong
+    collected_at: "2026-06-16T15:04:45Z"
+    freshness_window_days: 365
+    summary: "OpenAI shows repeated workflows becoming skills and calls out the built-in creator plus concrete example skill shapes."
+    why_it_matters: "Supports the prompt-to-skill-spec and skill-example-generator topics with a direct builder workflow and sample use cases."
+
+  - id: anthropic-skills
+    title: "Extend Claude with skills - Claude Code Docs"
+    source_url: "https://code.claude.com/docs/en/skills"
+    evidence_type: official-doc
+    signal_weight: strong
+    collected_at: "2026-06-16T15:04:45Z"
+    freshness_window_days: 365
+    summary: "Claude Code documents SKILL.md, bundled skills, discovery, live change detection, and troubleshooting for skills not triggering."
+    why_it_matters: "Strong evidence for skill-install-doctor and skill-release-kit because install paths, discovery, and trigger failures are first-class concerns."
+
+  - id: mcp-ecosystem
+    title: "Use Agent Skills in VS Code"
+    source_url: "https://code.visualstudio.com/docs/agent-customization/agent-skills"
+    evidence_type: official-doc
+    signal_weight: strong
+    collected_at: "2026-06-16T15:04:45Z"
+    freshness_window_days: 365
+    summary: "VS Code describes agent skills as folders of instructions, scripts, and resources, and frames them as an open standard across multiple agents."
+    why_it_matters: "Supports release-kit and portability-adjacent topic cards by showing the same skill package can move across Copilot surfaces."
+
+  - id: prompt-engineering
+    title: "Specification - Agent Skills"
+    source_url: "https://agentskills.io/specification"
+    evidence_type: official-doc
+    signal_weight: strong
+    collected_at: "2026-06-16T15:04:45Z"
+    freshness_window_days: 365
+    summary: "The spec nails down required name and description rules plus optional metadata fields, including length and formatting constraints."
+    why_it_matters: "Core evidence for prompt-to-skill-spec and skill-quality-scorecard because a topic card generator needs a strict manifest contract."
+
+  - id: agent-evals
+    title: "Evaluating skill output quality - Agent Skills"
+    source_url: "https://agentskills.io/skill-creation/evaluating-skills"
+    evidence_type: official-doc
+    signal_weight: medium
+    collected_at: "2026-06-16T15:04:45Z"
+    freshness_window_days: 365
+    summary: "The guide argues for measuring skill cost versus benefit and using concrete checks instead of vibes when judging skill quality."
+    why_it_matters: "Direct evidence for skill-quality-scorecard and skill-example-generator, where quality needs a scored rubric and not just a topic idea."
+
+  - id: llmops-cost
+    title: "GitHub - vercel-labs/skills: The open agent skills tool - npx skills"
+    source_url: "https://github.com/vercel-labs/skills"
+    evidence_type: github-repo
+    signal_weight: strong
+    collected_at: "2026-06-16T15:04:45Z"
+    freshness_window_days: 30
+    summary: "The repo shows a discovery/install CLI for an open skills ecosystem, supports many agents, and was published with a very recent release signal."
+    why_it_matters: "Best current evidence for skill-market-map because there is explicit tooling for finding, installing, and updating skills across ecosystems."

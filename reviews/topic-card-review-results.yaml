@@ -1,0 +1,11 @@
+reviewed_at_utc: 2026-06-16T14:25:28Z
+reviewer: local
+blocking_findings: 0
+cards:
+  workflow-to-skill-converter: pass
+  prompt-to-skill-spec: pass
+  skill-example-generator: pass
+  skill-quality-scorecard: pass
+  skill-install-doctor: pass
+  skill-release-kit: pass
+  skill-market-map: pass

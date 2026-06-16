@@ -1,0 +1,26 @@
+name: agent-skill-radar
+one_liner: Evidence-backed topic radar for choosing what Agent Skill to build next.
+target_user: AI agent and skill builders
+pain_point: Builders lack a concise way to prioritize skill topics by demand evidence.
+metrics_goal: Reach qualified builders who need evidence-backed Skill topic choices, measured by stars, issues, topic-card reuse, and substantive discussion rather than clone-only traffic.
+demo_command: python3 scripts/validate_radar.py .
+tier: flagship
+maturity_status: trend-aligned-2026-06-16
+next_release: v0.1.0
+polish_score: 92
+topics:
+  - ai-tools
+  - agent-skills
+  - cli
+  - developer-tools
+  - startup-metrics
+release_channel:
+  - github
+  - relevant-developer-communities
+launch_copy:
+  - This repository turns observable Agent Skill demand signals into topic cards.
+  - Each topic card includes evidence sources, freshness checks, saturation notes, and a starter spec.
+  - Validate structure with: python3 scripts/validate_radar.py .
+quality_gate:
+  commands:
+    - python3 -m unittest discover -s tests
